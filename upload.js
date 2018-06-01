@@ -1,21 +1,11 @@
 var getFiles = require('./readfile');
 var qiniu = require("qiniu");
 var fs = require('fs');
-var argv = require('commander').parse(process.argv)
 
 
-function warn (arg) {
-    console.log(`Warn: please give me the ${arg} !!!`) ;
-}
-
-module.exports = function() {
+module.exports = function(path , zone ,bucket , prefix, accessKey, secretKey ) {
 //需要用户输入的命令行参数
-    var path , zone ,bucket , prefix;
 
-    path = argv.path ? argv.path : warn("path");
-    zone = argv.zone ? argv.zone : warn("zone");
-    bucket = argv.bucket ? argv.bucket : warn("bucket");
-    prefix = argv.prefix ? argv.prefix : warn("prefx")
 
     // process.env.path = './';
 
@@ -25,17 +15,17 @@ module.exports = function() {
 
     // process.env.prefix = 'test/';
 
-
+   
 
     var config = new qiniu.conf.Config();
     // 空间对应的机房
-    config.zone = qiniu.zone.Zone_z0;
+    config.zone = zone;
 
 
     // var accessKey = '0bNiwJGpdwmvvuVAzLDjM6gnxj9MiwmSagVpIW81';
     // var secretKey = 'zHA9w8PoSfL6D4dvWNwU2GF4XHUn9MalynbANE3_';
-    accessKey = process.env.accessKey;
-    secretKey = process.env.secretKey;
+    // accessKey = process.env.accessKey;
+    // secretKey = process.env.secretKey;
 
     //编写上传回复设置
     var options = {
@@ -55,7 +45,7 @@ module.exports = function() {
     var putExtra = new qiniu.form_up.PutExtra();
 
     // 文件上传
-    if(path && zone && bucket && prefix)
+    
     getFiles.getFilesUrl(path)
         .then((files,rejectValue)=>{
             if(rejectValue){
