@@ -3,17 +3,17 @@ var qiniu = require("qiniu");
 var fs = require('fs');
 
 
-module.exports = function(path , zone ,bucket , prefix, accessKey, secretKey ) {
+ module.exports = function(path , zone ,bucket , prefix, accessKey, secretKey ) {
 //需要用户输入的命令行参数
 
+// console.log('into:'+path);
+// console.log('into:'+zone);
+// console.log('into:'+bucket)
+// console.log('into:'+prefix);
+// console.log('into:'+accessKey)
+// console.log('into:'+secretKey)
 
-    // process.env.path = './';
-
-    // process.env.zone = 'qiniu.zone.Zone_z0';
-
-    // process.env.bucket = 'test-sdk';
-
-    // process.env.prefix = 'test/';
+   
 
    
 
@@ -24,8 +24,10 @@ module.exports = function(path , zone ,bucket , prefix, accessKey, secretKey ) {
 
     // var accessKey = '0bNiwJGpdwmvvuVAzLDjM6gnxj9MiwmSagVpIW81';
     // var secretKey = 'zHA9w8PoSfL6D4dvWNwU2GF4XHUn9MalynbANE3_';
-    // accessKey = process.env.accessKey;
-    // secretKey = process.env.secretKey;
+    // var path = './';
+    // var zone = 'qiniu.zone.Zone_z0';
+    // var bucket = 'test-sdk';
+    // var prefix = 'test/';
 
     //编写上传回复设置
     var options = {
@@ -53,17 +55,29 @@ module.exports = function(path , zone ,bucket , prefix, accessKey, secretKey ) {
                 throw Error();
             } 
             //筛选出文件，防止上传文件夹而导致的错误
-        let filesPath = files.filter(file => {
-                let stat = fs.lstatSync(file);
-                if(stat.isFile()) {
-                    return file;
+        let filesPaths = files.filter(file => {
+            let filePath = path + file;
+        
+            if(path!='./' || path != '/'){
+                filePath =  path +'/'+ file;
+            }
+           
+                let stat = fs.lstatSync(filePath);
+                if(stat.isFile()) { 
+                    return filePath;
                 }else{
                     console.log("Warn!!!it isn't a file that can't to be uploaded :  " + file)
                 }
             });
-            filesPath.forEach(file => {
+        //  console.log(filesPaths)
+        // //console.log(files)
+          filesPaths.map(file => {
                 var key = prefix + file;
-                var localFile =  file;
+                //var localFile = file;
+                var localFile;
+                if(path!='./' || path != '/'){
+                    localFile =  path +'/'+ file;
+                }
                 formUploader.putFile(uploadToken, key, localFile, putExtra, function(respErr,
                     respBody, respInfo) {
                     if (respErr) {
@@ -74,12 +88,13 @@ module.exports = function(path , zone ,bucket , prefix, accessKey, secretKey ) {
                 } else {
                     console.log("there may be some err with code :" + respInfo.statusCode +'and Info : ' + respBody)           
                 }
+            });
         });
-    });
 
         })
         .catch(err => {
-            console.log('meet err');
+            
+            console.log('meet err:'+err);
         });
    
 
