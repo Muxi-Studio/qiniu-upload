@@ -3,7 +3,7 @@ var qiniu = require("qiniu");
 var fs = require('fs');
 
 
- module.exports = function(path , zone ,bucket , prefix, accessKey, secretKey ) {
+ exports.push = function(path , zone ,bucket , prefix, accessKey, secretKey ) {
 //需要用户输入的命令行参数
 
 // console.log('into:'+path);
@@ -29,6 +29,7 @@ var fs = require('fs');
     // var bucket = 'test-sdk';
     // var prefix = 'test/';
 
+    
     //编写上传回复设置
     var options = {
         //上次的空间
@@ -42,9 +43,11 @@ var fs = require('fs');
     var mac = new qiniu.auth.digest.Mac(accessKey, secretKey);
     //根据mac值生成独一无二的上传token
     var uploadToken=putPolicy.uploadToken(mac);
-
+    console.log(uploadToken)
     var formUploader = new qiniu.form_up.FormUploader(config);
+    console.log(formUploader)
     var putExtra = new qiniu.form_up.PutExtra();
+    console.log(putExtra)
 
     // 文件上传
     
@@ -55,7 +58,7 @@ var fs = require('fs');
                 throw Error();
             } 
             //筛选出文件，防止上传文件夹而导致的错误
-        let filesPaths = files.filter(file => {
+        let filesPaths = files.reduce((acc,file) => {
             let filePath = path + file;
         
             if(path!='./' || path != '/'){
@@ -64,22 +67,22 @@ var fs = require('fs');
            
                 let stat = fs.lstatSync(filePath);
                 if(stat.isFile()) { 
-                    return filePath;
+                    acc.push(filePath);
+                    return acc;
                 }else{
                     console.log("Warn!!!it isn't a file that can't to be uploaded :  " + file)
                 }
-            });
-        //  console.log(filesPaths)
+            },[]);
+          console.log(filesPaths)
         // //console.log(files)
           filesPaths.map(file => {
                 var key = prefix + file;
                 //var localFile = file;
-                var localFile;
-                if(path!='./' || path != '/'){
-                    localFile =  path +'/'+ file;
-                }
+                var localFile = file;
+               
                 formUploader.putFile(uploadToken, key, localFile, putExtra, function(respErr,
                     respBody, respInfo) {
+                        console.log('into')
                     if (respErr) {
                         throw respErr;
                     }
@@ -89,6 +92,7 @@ var fs = require('fs');
                     console.log("there may be some err with code :" + respInfo.statusCode +'and Info : ' + respBody)           
                 }
             });
+            console.log('异步')
         });
 
         })
