@@ -22,8 +22,7 @@ exports.push = function (path, zone, bucket, prefix, accessKey, secretKey) {
     config.zone = zone;
 
 
-    // var accessKey = '0bNiwJGpdwmvvuVAzLDjM6gnxj9MiwmSagVpIW81';
-    // var secretKey = 'zHA9w8PoSfL6D4dvWNwU2GF4XHUn9MalynbANE3_';
+
     // var path = './';
     // var zone = 'qiniu.zone.Zone_z0';
     // var bucket = 'test-sdk';
