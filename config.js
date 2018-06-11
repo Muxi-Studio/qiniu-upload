@@ -1,6 +1,6 @@
 var config = {
       path : './',
-      zone :'qiniu.zone.Zone_z0',
+      zone :'huad',
       bucket :'test-sdk',
       prefix : 'test/'
 }

@@ -6,22 +6,21 @@ var fs = require('fs');
 exports.push = function (path, zone, bucket, prefix, accessKey, secretKey) {
     //需要用户输入的命令行参数
 
-    console.log('into:' + path);
-    console.log('into:' + zone);
-    console.log('into:' + bucket)
-    console.log('into:' + prefix);
-    console.log('into:' + accessKey)
-    console.log('into:' + secretKey)
-
-
-
-
-
     var config = new qiniu.conf.Config();
     // 空间对应的机房
-    config.zone = zone;
-
-
+    if(zone == "huad") {
+        config.zone = qiniu.zone.Zone_z0;
+    } else if(zone == 'huab') {
+        config.zone = qiniu.zone.Zone_z1;
+    } else if(zone == "huan") {
+        config.zone = qiniu.zone.Zone_z2;
+    } else if(zone == 'beim') {
+        config.zone = qiniu.zone.Zone_na0;
+    } else {
+        config.zone = qiniu.zone.Zone_z0;
+    }
+    
+    
 
     // var path = './';
     // var zone = 'qiniu.zone.Zone_z0';
@@ -63,39 +62,40 @@ exports.push = function (path, zone, bucket, prefix, accessKey, secretKey) {
                 } 
                 let stat = fs.lstatSync(filePath);
                 if (stat.isFile()) {
-                    filesPaths.push(filePath);
+                    filesPaths.push(file);
                 } else {
                     console.log("Warn!!!it isn't a file that can't to be uploaded :  '" + file + "'")
                 }
             });
-            console.log(filesPaths)
-            // //console.log(files)
+          
             filesPaths.map(file => {
-                var key = prefix + file;
-                //var localFile = file;
-                var localFile = file;
-
+               let key = prefix + file;
+               let filePath = path + file;
+                if (path != './' && path != '/') {
+                    filePath = path + '/' + file;
+                } 
+                let localFile = filePath;
                 formUploader.putFile(uploadToken, key, localFile, putExtra, function (respErr,
                     respBody, respInfo) {
-                    console.log('into')
+                   
                     if (respErr) {
                         throw respErr;
                     }
                     if (respInfo.statusCode == 200) {
+                        
                         console.log(respBody);
                     } else {
                         console.log("there may be some err with code :" + respInfo.statusCode + 'and Info : ' + respBody)
                     }
+                   
                 });
-            });
+                console.log("push successfully!!! there are responses :")
+          });
 
         })
         .catch(err => {
-
             console.log('meet err:' + err);
         });
-
-
 }
 
 
