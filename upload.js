@@ -1,7 +1,7 @@
 var getFiles = require('./readfile');
 var qiniu = require("qiniu");
 var fs = require('fs');
-
+var chalk = require('chalk');
 
 exports.push = function (path, zone, bucket, prefix, accessKey, secretKey) {
     //需要用户输入的命令行参数
@@ -50,7 +50,7 @@ exports.push = function (path, zone, bucket, prefix, accessKey, secretKey) {
     getFiles.getFilesUrl(path)
         .then((files, rejectValue) => {
             if (rejectValue) {
-                console.log('there is some err on getFilesUrl Funciton and the rejectValue is :' + rejectValue);
+                console.log(chalk.red('there is some err on getFilesUrl Funciton and the rejectValue is :' + rejectValue));
                 throw Error();
             }
             //筛选出文件，防止上传文件夹而导致的错误
@@ -64,7 +64,7 @@ exports.push = function (path, zone, bucket, prefix, accessKey, secretKey) {
                 if (stat.isFile()) {
                     filesPaths.push(file);
                 } else {
-                    console.log("Warn!!!it isn't a file that can't to be uploaded :  '" + file + "'")
+                    console.log(chalk.yellow("Warn!!!it isn't a file that can't to be uploaded :  '" + file + "'"));
                 }
             });
           
@@ -85,16 +85,17 @@ exports.push = function (path, zone, bucket, prefix, accessKey, secretKey) {
                         
                         console.log(respBody);
                     } else {
-                        console.log("there may be some err with code :" + respInfo.statusCode + 'and Info : ' + respBody)
+                        console.log(chalk.red("ERROR:there may be some err with code :" + respInfo.statusCode + 'and Info : ' + respBody));
                     }
                    
                 });
-                console.log("push successfully!!! there are responses :")
+               
           });
+          console.log(chalk.bold.green("push successfully!!! there are responses :"));
 
         })
         .catch(err => {
-            console.log('meet err:' + err);
+            console.log(chalk.bold.red('ERR:meet err:' + err));
         });
 }
 

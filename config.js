@@ -4,4 +4,4 @@ var config = {
       bucket :'test-sdk',
       prefix : 'test/'
 }
-exports.config = config;
+module.exports = config;
