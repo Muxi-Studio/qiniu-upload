@@ -17,7 +17,6 @@ program
     .command('up <ak> <sk> <ifcli>')
     .description('first argument : accessKey , second argument: screctKey, third argument: if use cli ,choise:[CLI,CON]')
     .action(function (ak,sk,ifcli) {
-      
       if(ifcli === 'CLI') {
         if(program.path && program.zone && program.bucket && program.prefix) {
           print(program.path,program.zone,program.bucket,program.prefix,ak,sk);
