@@ -7,7 +7,7 @@ var prompt = require('co-prompt');
 var chalk = require('chalk');
 
 program
-    .command('push <ak> <sk> <ifcli>' , 'first argument : accessKey , second argument: screctKey, third argument: if use cli ,choise:[CLI,CON]')
+    .command('up <ak> <sk> <ifcli>' , 'first argument : accessKey , second argument: screctKey, third argument: if use cli ,choise:[CLI,CON]')
     .action(function (ak,sk,ifcli) { 
       
       if(ifcli === 'CLI') {
