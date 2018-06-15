@@ -5,28 +5,19 @@ var chalk = require('chalk');
 
 exports.push = function (path, zone, bucket, prefix, accessKey, secretKey) {
     //需要用户输入的命令行参数
-
     var config = new qiniu.conf.Config();
     // 空间对应的机房
-    if(zone == "huad") {
+    if (zone == "huad") {
         config.zone = qiniu.zone.Zone_z0;
-    } else if(zone == 'huab') {
+    } else if (zone == 'huab') {
         config.zone = qiniu.zone.Zone_z1;
-    } else if(zone == "huan") {
+    } else if (zone == "huan") {
         config.zone = qiniu.zone.Zone_z2;
-    } else if(zone == 'beim') {
+    } else if (zone == 'beim') {
         config.zone = qiniu.zone.Zone_na0;
     } else {
         config.zone = qiniu.zone.Zone_z0;
     }
-    
-    
-
-    // var path = './';
-    // var zone = 'qiniu.zone.Zone_z0';
-    // var bucket = 'test-sdk';
-    // var prefix = 'test/';
-
 
     //编写上传回复设置
     var options = {
@@ -44,9 +35,7 @@ exports.push = function (path, zone, bucket, prefix, accessKey, secretKey) {
     var formUploader = new qiniu.form_up.FormUploader(config);
     var putExtra = new qiniu.form_up.PutExtra();
 
-
     // 文件上传
-
     getFiles.getFilesUrl(path)
         .then((files, rejectValue) => {
             if (rejectValue) {
@@ -54,12 +43,12 @@ exports.push = function (path, zone, bucket, prefix, accessKey, secretKey) {
                 throw Error();
             }
             //筛选出文件，防止上传文件夹而导致的错误
-            let filesPaths = [] ;
+            let filesPaths = [];
             files.map((file) => {
                 let filePath = path + file;
                 if (path != './' && path != '/') {
                     filePath = path + '/' + file;
-                } 
+                }
                 let stat = fs.lstatSync(filePath);
                 if (stat.isFile()) {
                     filesPaths.push(file);
@@ -67,32 +56,29 @@ exports.push = function (path, zone, bucket, prefix, accessKey, secretKey) {
                     console.log(chalk.yellow("Warn!!!it isn't a file that can't to be uploaded :  '" + file + "'"));
                 }
             });
-          
+
             filesPaths.map(file => {
-               let key = prefix + file;
-               let filePath = path + file;
+                let key = prefix + file;
+                let filePath = path + file;
                 if (path != './' && path != '/') {
                     filePath = path + '/' + file;
-                } 
+                }
                 let localFile = filePath;
                 formUploader.putFile(uploadToken, key, localFile, putExtra, function (respErr,
                     respBody, respInfo) {
-                   
+
                     if (respErr) {
                         throw respErr;
                     }
                     if (respInfo.statusCode == 200) {
-                        
+
                         console.log(respBody);
                     } else {
                         console.log(chalk.red("ERROR:there may be some err with code :" + respInfo.statusCode + 'and Info : ' + respBody));
                     }
-                   
                 });
-               
-          });
-          console.log(chalk.bold.green("push successfully!!! there are responses :"));
-
+            });
+            console.log(chalk.bold.green("push successfully!!! there are responses :"));
         })
         .catch(err => {
             console.log(chalk.bold.red('ERR:meet err:' + err));
