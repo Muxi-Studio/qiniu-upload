@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "qiniu-upload": "./commander.js"
+    "qiniu-upload": "./bin/commander.js"
   },
   "author": "",
   "license": "ISC",
