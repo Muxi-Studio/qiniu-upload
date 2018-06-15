@@ -12,10 +12,21 @@ function print(path,zone,bucket,prefix,ak,sk) {
   console.log(chalk.green('screctKey: %s',sk));
 }
 program
-    //.version(require('../../package.json').version)
+    // .version(require('../../package.json').version)
     .option('-p, --path <string>','your local path such as ./')
-    .command('up <ak> <sk> <ifcli>')
-    .description('first argument : accessKey , second argument: screctKey, third argument: if use cli ,choise:[CLI,CON]')
+      //上传文件的空间(bucket)对应的机房
+    .option('-z, --zone <string>','your online zone ,'
+      +'there are some options: \n'
+      +'                                  华东：huad \n'
+      +'                                  华北：huab \n'
+      +'                                  华南：huan \n'
+      +'                                  北美：beim \n')
+   //上传文件的空间名
+    .option('-b, --bucket <string>','your online bucket such as "mybucket"')
+   //上传文件的前缀
+    .option('-f, --prefix <string>','your upload prefix such "test\\"')
+    .command('push <ak> <sk> <ifcli>')
+    .description('first argument : accessKey , second argument: screctKey, third argument: whether use cli ,choise:[CLI,FILE]')
     .action(function (ak,sk,ifcli) {
       if(ifcli === 'CLI') {
         if(program.path && program.zone && program.bucket && program.prefix) {
@@ -31,8 +42,8 @@ program
             CLI.push(path,zone,bucket,prefix,ak,sk);  
           })
         }
-      } else if(ifcli === 'CON'){
-        var CONF  = require('../../qiniu-upload-config');
+      } else if(ifcli === 'FILE'){
+        var CONF  = require('../../qiniu-upload.config');
         if(CONF.path &&   CONF.zone && CONF.bucket && CONF.prefix) {
           var path =  CONF.path ;
           var zone =  CONF.zone ;
@@ -50,17 +61,7 @@ program
         program.outputHelp();
       }
     })
-    //上传文件的空间(bucket)对应的机房
-    .option('-z, --zone <string>','your online zone \n'
-       +'there are some options: \n'
-       +'                           华东：huad \n'
-       +'                           华北：huab \n'
-       +'                           华南：huan \n'
-       +'                           北美：beim \n')
-    //上传文件的空间名
-    .option('-b, --bucket <string>','your online bucket such as "mybucket"')
-    //上传文件的前缀
-    .option('-f, --prefix <string>','your upload prefix such "test\\"')
+  
     
   
 
@@ -71,14 +72,3 @@ if (!process.argv.slice(2).length) {
 }
 
 
-// let path = program.path || CONF.path;
-      // let zone = program.zone || CONF.zone;
-      // let bucket = program.bucket || CONF.bucket;
-      // let prefix = program.prefix || CONF.prefix;
-   
-
-      // if(!path||!zone||!bucket||!prefix) {
-      //   console.log('please give all parameters')
-      // } else {
-        // CLI.push(path,zone,bucket,prefix,ak,sk);
-      // }
