@@ -4,7 +4,7 @@ This is a tool for pushing static files to QiNiu by Command Line.
 
 ## Install
     npm install -g qiniu-upload
-## Configue using CLI
+## Config using CLI
   
 - using options with '-'
 
@@ -21,7 +21,7 @@ This is a tool for pushing static files to QiNiu by Command Line.
         bucket:
         prefix:
   
-## Config using file
+## Config using FILE
 qiniu-upload will find **qiniu-upload.config.js** under the working directory, **qiniu-upload.config.js**  is a file like this:
 ```js
     module.exports = {
