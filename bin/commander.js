@@ -2,7 +2,7 @@
 'use strict';
 
 var program = require('commander');
-var CLI = require('./lib/upload');
+var CLI = require('../lib/upload');
 var co = require('co');
 var prompt = require('co-prompt');
 var chalk = require('chalk');
