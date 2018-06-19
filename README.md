@@ -3,7 +3,7 @@
 This is a tool for pushing static files to QiNiu by Command Line.
 
 ## Install
-    npm install -g qiniu-upload
+    npm install -g qiniu-upload-tool
 ## Config using CLI
   
 - using options with '-'
