@@ -2,12 +2,12 @@
   "name": "qiniu-upload-tool",
   "version": "1.0.3",
   "description": "qiniu-upload using nodejs",
-  "main": "./bin/commander.js",
+  "main": "./bin/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "qiniu-upload": "./bin/commander.js"
+    "qiniu-upload": "./bin/index.js"
   },
   "author": "fengzi2016",
   "license": "ISC",
