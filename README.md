@@ -4,15 +4,26 @@ This is a tool for pushing static files to QiNiu by Command Line.
 
 ## Install
     npm install -g qiniu-upload-tool
+
+## Necessary!!
+
+ ### you have to give a file named **qiniu-upload.config.js** with following code:
+```js   
+     module.exports = {
+      accessKey:"your ak",
+      screctKey:"your sk"
+    }
+```
+ **Make sure that don't push this file to public!**  otherwise,others will know them.  
 ## Config using CLI
   
 - using options with '-'
 
-         qiniu-upload push accessKey screctKey CLI -p path -z zone -b bucket -f prefix
+         qiniu-upload push CLI -p path -z zone -b bucket -f prefix
    
 - using options with description
    
-        qiniu-upload push accessKey screctKey CLI
+        qiniu-upload push CLI
     
     **then the command line will remind you to enter one by one , like:**
    
@@ -21,19 +32,23 @@ This is a tool for pushing static files to QiNiu by Command Line.
         bucket:
         prefix:
   
-## Config using FILE
+## Config using FILE with other options
 qiniu-upload will find **qiniu-upload.config.js** under the working directory, **qiniu-upload.config.js**  is a file like this:
 ```js
     module.exports = {
+      accessKey:"your ak",
+      screctKey:"your sk"
       path : './',
       zone :'huad',
       bucket :'test-sdk',
       prefix : 'test/'
     }
 ```
+*Warn!!!: if there are folders in the path which you give,the tool will ignore them!*
+
 **then enter these in the command line:**
 
-    qiniu-upload push accessKey screctKey FILE
+    qiniu-upload push FILE
 
 ## Options
 
