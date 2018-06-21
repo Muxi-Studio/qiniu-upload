@@ -14,7 +14,7 @@ This is a tool for pushing static files to QiNiu by Command Line.
       screctKey:"your sk"
     }
 ```
- **Make sure that don't push this file to public!**  otherwise,others will know them.  
+ **Make sure that don't push this file to public!**  otherwise,others will know your keys.  
 ## Config using CLI
   
 - using options with '-'
