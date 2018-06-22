@@ -10,8 +10,8 @@ This is a tool for pushing static files to QiNiu by Command Line.
  ### you have to give a file named **qiniu-upload.config.js** with following code:
 ```js   
      module.exports = {
-      accessKey:"your ak",
-      screctKey:"your sk"
+      accessKey:"your accessKey",
+      screctKey:"your screctKey"
     }
 ```
  **Make sure that don't push this file to public!**  otherwise,others will know your keys.  
@@ -36,8 +36,8 @@ This is a tool for pushing static files to QiNiu by Command Line.
 qiniu-upload will find **qiniu-upload.config.js** under the working directory, **qiniu-upload.config.js**  is a file like this:
 ```js
     module.exports = {
-      accessKey:"your ak",
-      screctKey:"your sk"
+      accessKey:"your accessKey",
+      screctKey:"your screctKey"
       path : './',
       zone :'huad',
       bucket :'test-sdk',
