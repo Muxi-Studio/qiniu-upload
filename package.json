@@ -1,6 +1,6 @@
 {
   "name": "qiniu-upload-tool",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "qiniu-upload using nodejs",
   "main": "./bin/index.v2.js",
   "scripts": {
