@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 'use strict';
-
+var path = require("path");
 var program = require('commander');
 var CLI = require('../lib/upload');
 var co = require('co');
 var prompt = require('co-prompt');
 var chalk = require('chalk');
-var CONF = require('../../../qiniu-upload.config');
+//var CONF = require('../../../qiniu-upload.config.js');
+var CONF = require('../../../qiniu-upload.config.js');
 const accessKey = CONF.accessKey;
 const screctKey = CONF.screctKey;
 if(!accessKey||!screctKey) {
