@@ -1,21 +1,27 @@
-# qiniu-upload
+# qiniu-upload-tool
 
 This is a tool for pushing static files to QiNiu by Command Line.
 
 ## Install
     npm install -g qiniu-upload-tool
-## Use
+## Link 
     npm link qinu-upload-tool
 ## Necessary!!
 
- ### you have to give a file named **qiniu-upload.config.js** with following code:
+### you have to give a file named **qiniu-upload.config.js** with following code:
 ```js   
      module.exports = {
       accessKey:"your accessKey",
       screctKey:"your screctKey"
     }
 ```
- **Make sure that don't push this file to public!**  otherwise,others will know your keys.  
+ **Make sure that don't push this file to public!**  
+ for it , you can add following words in your .gitignore:
+
+    qiniu-upload.config.js
+    
+ otherwise,others will know your keys.  
+
 ## Config using CLI
   
 - using options with '-'

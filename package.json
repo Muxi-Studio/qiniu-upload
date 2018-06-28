@@ -1,8 +1,9 @@
 {
   "name": "qiniu-upload-tool",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "qiniu-upload using nodejs",
   "main": "./bin/index.v2.js",
+  "keywords":["qiniu-upload using nodejs","qinniu-upload-tool"],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
