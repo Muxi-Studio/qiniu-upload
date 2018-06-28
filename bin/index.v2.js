@@ -6,7 +6,7 @@ var CLI = require('../lib/upload');
 var co = require('co');
 var prompt = require('co-prompt');
 var chalk = require('chalk');
-var CONF = require(path.resolve(__dirname,'../../../qiniu-upload.config.js'));
+var CONF = require(path.resolve(process.cwd(),'qiniu-upload.config.js'));
 
 const accessKey = CONF.accessKey;
 const screctKey = CONF.screctKey;
@@ -15,12 +15,12 @@ if(!accessKey||!screctKey) {
     process.exit(1);
 }
 function print(path, zone, bucket, prefix, ak, sk) {
-  console.log(chalk.green('path: %s zone: %s bucket: %s prefix: %s ', path, zone, bucket, prefix));
-  console.log(chalk.green('accessKey: %s', ak));
-  console.log(chalk.green('screctKey: %s', sk));
+  console.log(chalk.green('path:' + path +' zone: ' + zone +' bucket: '+ bucket + ' prefix:' + prefix));
+  console.log(chalk.green('accessKey: ', ak));
+  console.log(chalk.green('screctKey: ', sk));
 }
 program
-  .version(require('../../package.json').version)
+  .version(require('../package.json').version)
   .option('-p, --path <string>', 'your local path such as ./')
   //上传文件的空间(bucket)对应的机房
   .option('-z, --zone <string>', 'your online zone ,'

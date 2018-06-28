@@ -4,7 +4,8 @@ This is a tool for pushing static files to QiNiu by Command Line.
 
 ## Install
     npm install -g qiniu-upload-tool
-
+## Use
+    npm link qinu-upload-tool
 ## Necessary!!
 
  ### you have to give a file named **qiniu-upload.config.js** with following code:
