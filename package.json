@@ -1,23 +1,30 @@
 {
   "name": "qiniu-upload-tool",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "qiniu-upload using nodejs",
-  "main": "./bin/index.v2.js",
-  "keywords":["qiniu-upload using nodejs","qinniu-upload-tool"],
+  "main": "./bin/index.v3.js",
+  "keywords": [
+    "qiniu-upload using nodejs",
+    "qinniu-upload-tool"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "precommit": "pretty-quick --staged"
   },
   "bin": {
-    "qiniu-upload": "./bin/index.v2.js"
+    "qiniu-upload": "./bin/index.v3.js"
   },
   "author": "fengzi2016",
   "license": "ISC",
   "dependencies": {
     "chalk": "^2.4.1",
-    "co": "^4.6.0",
-    "co-prompt": "^1.0.0",
     "commander": "^2.15.1",
     "path": "^0.12.7",
     "qiniu": "^7.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.0.1",
+    "prettier": "^1.13.7",
+    "pretty-quick": "^1.6.0"
   }
 }
