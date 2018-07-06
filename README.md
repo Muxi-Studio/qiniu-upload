@@ -7,8 +7,6 @@ This is a tool for pushing static files to QiNiu by Command Line.
 ## Link 
     npm link qinu-upload-tool
 
- **Make sure that don't push this file to public!**  
-
 
 ## Config using CLI 
   
@@ -31,7 +29,10 @@ This is a tool for pushing static files to QiNiu by Command Line.
   
 ## Config using FILE with other options
 
-qiniu-upload will find **qiniu-upload.config.js** under the working directory, **qiniu-upload.config.js**  is a file like this:
+- first, you need to give your config file path by a option: `-w filePath` ,which is relative to your executing the command line directory.
+
+- second, you need to make sure that the file path you give corresponds to a file whose content looks like  this:
+
 ```js
     module.exports = {
       accessKey:"your accessKey",
@@ -43,21 +44,30 @@ qiniu-upload will find **qiniu-upload.config.js** under the working directory, *
       recursion: 'yes',
     }
 ```
-*Warn!!!: if there are folders in the path which you give,the tool will ignore them!*
+ *Make sure that don't push this file to public! Otherwise, others will know your keys and do something you don't expect.*
 
 **then enter these in the command line:**
 
-    qiniu-upload push FILE
+    qiniu-upload push -w filePath
 
 ## Options
 
 ```js
   '-p, --path <string>', 'your local path such as ./'
   //上传文件的空间(bucket)对应的机房
-  '-z, --zone <string>', 'your online zone ,' 'there are some options: 华东：huad  华北：huab 华南：huan 北美：beim '
+  '-z, --zone <string>', 'your online zone ,'
+     'there are some options: \n'
+     '                                  华东：huad '
+     '                                  华北：huab '
+     '                                  华南：huan '
+     '                                  北美：beim '
   //上传文件的空间名
- '-b, --bucket <string>', 'your online bucket such as "mybucket"'
+  '-b, --bucket <string>', 'your online bucket such as "mybucket"'
+
   //上传文件的前缀
- '-f, --prefix <string>', 'your upload prefix such "test\\"'
-  
+  '-f, --prefix <string>', 'your upload prefix such "test"'
+
+  '-w,--with <string>', 'your config file\'s path which is relative to executing the command line directory'
+
+  '-r, --recursion <string>','whether to upload subdirectories, if you want , please give "yes"'
 ```
