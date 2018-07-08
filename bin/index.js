@@ -2,21 +2,17 @@
 
 const path = require("path");
 const program = require("commander");
-const CLI = require("../lib/upload.v2");
+const CLI = require("../lib/upload");
 const print = require("../lib/print");
 const logger = require("../util/logger");
 
-// 获取环境变量 accessKey 和 screctKey
 let fileConf = {};
 let accessKey;
 let screctKey;
 
-const OPNUMBERS = 7;
-
 program
   .version(require("../package.json").version)
   .option("-p, --path <string>", "your local path such as ./")
-  // 上传文件的空间(bucket)对应的机房
   .option(
     "-z, --zone <string>",
     "your online zone ," +
@@ -26,12 +22,10 @@ program
       "                                  华南：huan \n" +
       "                                  北美：beim \n"
   )
-  // 上传文件的空间名
   .option("-b, --bucket <string>", 'your online bucket such as "mybucket"')
-  // 上传文件的前缀
   .option("-f, --prefix <string>", 'your upload prefix such "test"')
   .option(
-    "-w,--with <string>",
+    "-c,--config <string>",
     "your config file's path which is relative to executing the command line directory"
   )
   .option(
@@ -40,8 +34,10 @@ program
   )
   .command("push")
   .action(() => {
-    if (program.with) {
-      const CONF = require(path.resolve(process.cwd(), program.with));
+    // if using config file
+    if (program.config) {
+      // get config content
+      const CONF = require(path.resolve(process.cwd(), program.config));
       fileConf = {
         path: CONF.path,
         zone: CONF.zone,
@@ -52,11 +48,12 @@ program
         screctKey: CONF.screctKey
       };
     }
-
+    // if there is no accessKey or screctKey in the config file
     if (!fileConf.accessKey || !fileConf.screctKey) {
+      // and if there is no AK or SK in processs.env
       if (!process.env.AK || !process.env.SK) {
         logger.error(
-          'ERROR:please give accessKey and screctKey by CLI such as："set AK=ak" in Windows or "export AK=ak" in Unix'
+          'please give accessKey and screctKey by CLI such as："set AK=ak SK=sk" in Windows or "export AK=ak SK=sk" in Unix'
         );
         process.exit(1);
       } else {
@@ -75,28 +72,27 @@ program
       screctKey
     };
     const cliArr = Object.keys(cliConf);
+    // If some options are not given by the user through the command line
     cliArr.forEach(key => {
       if (cliConf[key] === undefined) {
         delete cliConf[key];
       }
     });
+    // cliConf have higher priority
     const finalObj = Object.assign({}, fileConf, cliConf);
     const finalKeyArr = Object.keys(finalObj);
-    if (finalKeyArr.length !== OPNUMBERS) {
-      logger.error(
-        "ERROR:please give all of path , zone ,bucket , prefix , accessKey and screctKey!"
-      );
-      process.exit(1);
-    }
-    finalKeyArr.map(key => {
+    let giveAll = true;
+    // If users don't give all the options
+    finalKeyArr.forEach(key => {
       if (finalObj[key] === undefined) {
-        logger.error(
-          "ERROR:please give all of path , zone ,bucket , prefix , accessKey and screctKey!"
-        );
-        process.exit(1);
+        giveAll = false;
+        logger.error("please give the option : '" + key + "'");
       }
       return key;
     });
+    if (!giveAll) {
+      process.exit(1);
+    }
 
     print(
       finalObj.path,
@@ -107,7 +103,7 @@ program
       finalObj.screctKey,
       finalObj.recursion
     );
-    CLI.push(
+    CLI.upload(
       finalObj.path,
       finalObj.zone,
       finalObj.bucket,

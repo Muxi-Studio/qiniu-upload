@@ -8,7 +8,9 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: "module"
   },
+  plugins: ["prettier"],
   rules: {
+    "prettier/prettier": "error",
     "global-require": "off",
     "import/no-dynamic-require": "off",
     "no-tabs": "off",
