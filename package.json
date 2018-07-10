@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --ext .js",
+    "lint": "./node_modules/.bin/eslint ./ --fix",
     "precommit": "npm run lint && pretty-quick --staged"
   },
   "bin": {
@@ -29,6 +29,7 @@
     "eslint-config-airbnb": "^17.0.0",
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-prettier": "^2.6.2",
     "eslint-plugin-react": "^7.9.1",
     "husky-hg": "^0.15.2",
     "prettier": "^1.13.7",

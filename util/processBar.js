@@ -1,15 +1,14 @@
-const ProgressBar = require("progress");
+const ProgressBar = require(`progress`);
 
 module.exports = function showBar(len) {
   const bar = new ProgressBar(
-    "[qiniu-upload-tool] uploading [:bar] :rate/bps :percent :etas",
+    `[qiniu-upload-tool] uploading [:bar] :rate/bps :percent :etas`,
     {
-      complete: "█",
-      incomplete: "░",
+      complete: `█`,
+      incomplete: `░`,
       width: 20,
       total: len
     }
   );
-
   return bar;
 };

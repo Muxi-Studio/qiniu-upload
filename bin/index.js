@@ -1,38 +1,37 @@
 #!/usr/bin/env node
 
-const path = require("path");
-const program = require("commander");
-const CLI = require("../lib/upload");
-const print = require("../lib/print");
-const logger = require("../util/logger");
+const path = require(`path`);
+const program = require(`commander`);
+const CLI = require(`../lib/upload`);
+const print = require(`../lib/print`);
+const logger = require(`../util/logger`);
 
 let fileConf = {};
 let accessKey;
 let screctKey;
 
 program
-  .version(require("../package.json").version)
-  .option("-p, --path <string>", "your local path such as ./")
+  .version(require(`../package.json`).version)
+  .option(`-p, --path <string>`, `your local path such as ./`)
   .option(
-    "-z, --zone <string>",
-    "your online zone ," +
-      "there are some options: \n" +
-      "                                  华东：huad \n" +
-      "                                  华北：huab \n" +
-      "                                  华南：huan \n" +
-      "                                  北美：beim \n"
+    `-z, --zone <string>`,
+    `your online zone ,there are some options: \n` +
+      `                                  华东：huad \n` +
+      `                                  华北：huab \n` +
+      `                                  华南：huan \n` +
+      `                                  北美：beim \n`
   )
-  .option("-b, --bucket <string>", 'your online bucket such as "mybucket"')
-  .option("-f, --prefix <string>", 'your upload prefix such "test"')
+  .option(`-b, --bucket <string>`, `your online bucket such as "mybucket"`)
+  .option(`-f, --prefix <string>`, `your upload prefix such as "test"`)
   .option(
-    "-c,--config <string>",
-    "your config file's path which is relative to executing the command line directory"
+    `-c,--config <string>`,
+    `your config file's path which is relative to executing the command line directory`
   )
   .option(
-    "-r, --recursion <string>",
-    'whether to upload subdirectories, if you want , please give "yes"'
+    `-r, --recursion <string>`,
+    `whether to upload subdirectories, if you want , please give "yes" `
   )
-  .command("push")
+  .command(`push`)
   .action(() => {
     // if using config file
     if (program.config) {
@@ -53,7 +52,7 @@ program
       // and if there is no AK or SK in processs.env
       if (!process.env.AK || !process.env.SK) {
         logger.error(
-          'please give accessKey and screctKey by CLI such as："set AK=ak SK=sk" in Windows or "export AK=ak SK=sk" in Unix'
+          `please give accessKey and screctKey by CLI such as："set AK=ak SK=sk" in Windows or "export AK=ak SK=sk" in Unix`
         );
         process.exit(1);
       } else {
@@ -86,7 +85,7 @@ program
     finalKeyArr.forEach(key => {
       if (finalObj[key] === undefined) {
         giveAll = false;
-        logger.error("please give the option : '" + key + "'");
+        logger.error(`please give the option : '${key}'`);
       }
       return key;
     });
@@ -94,15 +93,7 @@ program
       process.exit(1);
     }
 
-    print(
-      finalObj.path,
-      finalObj.zone,
-      finalObj.bucket,
-      finalObj.prefix,
-      finalObj.accessKey,
-      finalObj.screctKey,
-      finalObj.recursion
-    );
+    print(finalObj);
     CLI.upload(
       finalObj.path,
       finalObj.zone,

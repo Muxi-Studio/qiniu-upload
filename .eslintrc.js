@@ -10,14 +10,20 @@ module.exports = {
   },
   plugins: ["prettier"],
   rules: {
+    "space-before-function-paren": "off",
     "prettier/prettier": "error",
     "global-require": "off",
     "import/no-dynamic-require": "off",
     "no-tabs": "off",
     "no-console": "off",
-    indent: ["error", "tab"],
+    "comma-dangle": "off",
+    "arrow-parens": "off",
+    "implicit-arrow-linebreak": "off",
     "linebreak-style": ["error", "unix"],
-    quotes: ["error", "double"],
+    "operator-linebreak": "off",
+    "function-paren-newline": "off",
+    indent: "off",
+    quotes: ["error", "backtick"],
     semi: ["error", "always"]
   }
 };
