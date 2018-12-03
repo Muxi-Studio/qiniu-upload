@@ -43,7 +43,7 @@ program
       // try catch 一下，不然用户输入的路径是错的，找不到文件怎么办。如果文件读不到直接就报错 exit 了
       const CONF = require(path.resolve(process.cwd(), program.config));
 
-      // 这边可以搞一个 const OPTIONS = ["path", "zone", "bucket", ...] 这样的常量，然后遍历这个常量 
+      // 这边可以搞一个 const OPTIONS = ["path", "zone", "bucket", ...] 这样的常量，然后遍历这个常量
       // 做赋值 底下的 cliConf 也是一样的。这样的好处是代码更简洁，然后选项变化的时候只要修改配置就行。
       fileConf = {
         path: CONF.path,
