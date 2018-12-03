@@ -9,9 +9,22 @@ const CLI = require(`../lib/upload`);
 const print = require(`../lib/print`);
 const logger = require(`../util/logger`);
 
-let fileConf = {};
-let accessKey;
-let screctKey;
+const fileConf = {};
+// let accessKey;
+// let screctKey;
+const OPTIONS = [
+  `path`,
+  `zone`,
+  `bucket`,
+  `prefix`,
+  `recursion`,
+  `accessKey`,
+  `screctKey`
+];
+const defaultConf = {
+  prefix: `/`,
+  recursion: `yes`
+};
 
 program
   .version(require(`../package.json`).version)
@@ -39,21 +52,29 @@ program
     // if using config file
     if (program.config) {
       // get config content
-      // CONF 为什么要大写
-      // try catch 一下，不然用户输入的路径是错的，找不到文件怎么办。如果文件读不到直接就报错 exit 了
-      const CONF = require(path.resolve(process.cwd(), program.config));
+      let conf;
+      try {
+        conf = require(path.resolve(process.cwd(), program.config));
+      } catch (err) {
+        logger.error(`config file path is wrong `);
+        process.exit(1);
+      }
 
-      // 这边可以搞一个 const OPTIONS = ["path", "zone", "bucket", ...] 这样的常量，然后遍历这个常量 
+      // 这边可以搞一个 const OPTIONS = ["path", "zone", "bucket", ...] 这样的常量，然后遍历这个常量
       // 做赋值 底下的 cliConf 也是一样的。这样的好处是代码更简洁，然后选项变化的时候只要修改配置就行。
-      fileConf = {
-        path: CONF.path,
-        zone: CONF.zone,
-        bucket: CONF.bucket,
-        prefix: CONF.prefix,
-        recursion: CONF.recursion,
-        accessKey: CONF.accessKey,
-        screctKey: CONF.screctKey
-      };
+      OPTIONS.forEach(option => {
+        fileConf[option] = conf[option];
+      });
+
+      // fileConf = {
+      //   path: conf.path,
+      //   zone: conf.zone,
+      //   bucket: conf.bucket,
+      //   prefix: conf.prefix,
+      //   recursion: conf.recursion,
+      //   accessKey: conf.accessKey,
+      //   screctKey: conf.screctKey
+      // };
     }
     // if there is no accessKey or screctKey in the config file
     if (!fileConf.accessKey || !fileConf.screctKey) {
@@ -64,20 +85,26 @@ program
         );
         process.exit(1);
       } else {
-        accessKey = process.env.AK;
-        screctKey = process.env.SK;
+        // accessKey = process.env.AK;
+        // screctKey = process.env.SK;
+        program.accessKey = process.env.AK;
+        program.screctKey = process.env.SK;
       }
     }
 
-    const cliConf = {
-      path: program.path,
-      zone: program.zone,
-      bucket: program.bucket,
-      prefix: program.prefix,
-      recursion: program.recursion,
-      accessKey,
-      screctKey
-    };
+    // const cliConf = {
+    //   path: program.path,
+    //   zone: program.zone,
+    //   bucket: program.bucket,
+    //   prefix: program.prefix,
+    //   recursion: program.recursion,
+    //   accessKey,
+    //   screctKey
+    // };
+    let cliConf = {};
+    OPTIONS.forEach(option => {
+      cliConf[option] = program[option];
+    });
     const cliArr = Object.keys(cliConf);
     // If some options are not given by the user through the command line
     cliArr.forEach(key => {
@@ -95,11 +122,17 @@ program
 
     // If users don't give all the options
     finalKeyArr.forEach(key => {
-      if (finalObj[key] === undefined) {
+      if (
+        (key === `prefix` || key === `recursion`) &&
+        finalObj[key] === undefined
+      ) {
+        finalObj[key] = defaultConf[key];
+        logger.warn(`${key} is defaultValue ${finalObj[key]}`);
+      } else if (finalObj[key] === undefined) {
         giveAll = false;
         logger.error(`please give the option : '${key}'`);
       }
-      return key;
+      // return key;
     });
     if (!giveAll) {
       process.exit(1);
@@ -108,15 +141,16 @@ program
     print(finalObj);
 
     // 直接把整个obj传进去就行，然后在upload的参数那边用 { path, zone }这样的结构赋值就行。不然你加个参数这边就要改代码。代码看起来也很乱。
-    CLI.upload(
-      finalObj.path,
-      finalObj.zone,
-      finalObj.bucket,
-      finalObj.prefix,
-      finalObj.accessKey,
-      finalObj.screctKey,
-      finalObj.recursion
-    );
+    // CLI.upload(
+    //   finalObj.path,
+    //   finalObj.zone,
+    //   finalObj.bucket,
+    //   finalObj.prefix,
+    //   finalObj.accessKey,
+    //   finalObj.screctKey,
+    //   finalObj.recursion
+    // );
+    CLI.upload(finalObj);
   });
 
 program.parse(process.argv);
