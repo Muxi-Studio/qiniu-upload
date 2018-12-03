@@ -24,6 +24,15 @@ module.exports = {
     "function-paren-newline": "off",
     indent: "off",
     quotes: ["error", "backtick"],
-    semi: ["error", "always"]
+    semi: ["error", "always"],
+    "object-curly-newline": [
+      "off",
+      {
+        ObjectExpression: "always",
+        ObjectPattern: { multiline: true },
+        ImportDeclaration: "never",
+        ExportDeclaration: { multiline: true, minProperties: 3 }
+      }
+    ]
   }
 };

@@ -101,7 +101,7 @@ program
     //   accessKey,
     //   screctKey
     // };
-    let cliConf = {};
+    const cliConf = {};
     OPTIONS.forEach(option => {
       cliConf[option] = program[option];
     });
