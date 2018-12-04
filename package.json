@@ -1,6 +1,6 @@
 {
   "name": "qiniu-upload-tool",
-  "version": "2.1.1",
+  "version": "2.2.1",
   "description": "qiniu-upload using nodejs",
   "main": "./bin/index.js",
   "keywords": [
@@ -20,6 +20,7 @@
   "dependencies": {
     "chalk": "^2.4.1",
     "commander": "^2.15.1",
+    "mime": "^2.4.0",
     "path": "^0.12.7",
     "progress": "^2.0.0",
     "qiniu": "^7.2.0"

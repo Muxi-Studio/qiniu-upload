@@ -37,7 +37,7 @@ This is a tool for pushing static files to QiNiu by Command Line.
 ```js
 module.exports = {
   accessKey: "your accessKey",
-  screctKey: "your screctKey",
+  secretKey: "your secretKey",
   path: "./",
   zone: "huad",
   bucket: "test-sdk",

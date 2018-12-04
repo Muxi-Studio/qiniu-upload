@@ -10,8 +10,6 @@ const print = require(`../lib/print`);
 const logger = require(`../util/logger`);
 
 const fileConf = {};
-// let accessKey;
-// let screctKey;
 const OPTIONS = [
   `path`,
   `zone`,
@@ -19,7 +17,7 @@ const OPTIONS = [
   `prefix`,
   `recursion`,
   `accessKey`,
-  `screctKey`
+  `secretKey`
 ];
 const defaultConf = {
   prefix: `/`,
@@ -52,6 +50,7 @@ program
     // if using config file
     if (program.config) {
       // get config content
+
       let conf;
       try {
         conf = require(path.resolve(process.cwd(), program.config));
@@ -59,48 +58,23 @@ program
         logger.error(`config file path is wrong `);
         process.exit(1);
       }
-
-      // 这边可以搞一个 const OPTIONS = ["path", "zone", "bucket", ...] 这样的常量，然后遍历这个常量
-      // 做赋值 底下的 cliConf 也是一样的。这样的好处是代码更简洁，然后选项变化的时候只要修改配置就行。
       OPTIONS.forEach(option => {
         fileConf[option] = conf[option];
       });
-
-      // fileConf = {
-      //   path: conf.path,
-      //   zone: conf.zone,
-      //   bucket: conf.bucket,
-      //   prefix: conf.prefix,
-      //   recursion: conf.recursion,
-      //   accessKey: conf.accessKey,
-      //   screctKey: conf.screctKey
-      // };
     }
-    // if there is no accessKey or screctKey in the config file
-    if (!fileConf.accessKey || !fileConf.screctKey) {
+    // if there is no accessKey or secretKey in the config file
+    if (!fileConf.accessKey || !fileConf.secretKey) {
       // and if there is no AK or SK in processs.env
       if (!process.env.AK || !process.env.SK) {
         logger.error(
-          `please give accessKey and screctKey by CLI such as："set AK=ak SK=sk" in Windows or "export AK=ak SK=sk" in Unix`
+          `please give accessKey and secretKey  in the config file or by CLI such as："set AK=ak SK=sk" in Windows or "export AK=ak SK=sk" in Unix`
         );
         process.exit(1);
       } else {
-        // accessKey = process.env.AK;
-        // screctKey = process.env.SK;
         program.accessKey = process.env.AK;
-        program.screctKey = process.env.SK;
+        program.secretKey = process.env.SK;
       }
     }
-
-    // const cliConf = {
-    //   path: program.path,
-    //   zone: program.zone,
-    //   bucket: program.bucket,
-    //   prefix: program.prefix,
-    //   recursion: program.recursion,
-    //   accessKey,
-    //   screctKey
-    // };
     const cliConf = {};
     OPTIONS.forEach(option => {
       cliConf[option] = program[option];
@@ -113,43 +87,21 @@ program
       }
     });
     // cliConf have higher priority
-    const finalObj = Object.assign({}, fileConf, cliConf);
+    const finalObj = Object.assign({}, defaultConf, fileConf, cliConf);
     const finalKeyArr = Object.keys(finalObj);
     let giveAll = true;
 
-    // 这里不需要这么写，finalObj 里的 key 有两类，一类是必须穿的，一类是可以不传的，比如 recursion，prefix，这种如果不传是可以直接给默认值的。
-    // 所以这边的校验，可以写成 React 那种 propType 和 defaultProps 类似的方式。把要有的 key 列出来，把key 的缺省值也列出来。然后来对传入的对象做处理。
-
     // If users don't give all the options
     finalKeyArr.forEach(key => {
-      if (
-        (key === `prefix` || key === `recursion`) &&
-        finalObj[key] === undefined
-      ) {
-        finalObj[key] = defaultConf[key];
-        logger.warn(`${key} is defaultValue ${finalObj[key]}`);
-      } else if (finalObj[key] === undefined) {
+      if (finalObj[key] === undefined) {
         giveAll = false;
         logger.error(`please give the option : '${key}'`);
       }
-      // return key;
     });
     if (!giveAll) {
       process.exit(1);
     }
-
     print(finalObj);
-
-    // 直接把整个obj传进去就行，然后在upload的参数那边用 { path, zone }这样的结构赋值就行。不然你加个参数这边就要改代码。代码看起来也很乱。
-    // CLI.upload(
-    //   finalObj.path,
-    //   finalObj.zone,
-    //   finalObj.bucket,
-    //   finalObj.prefix,
-    //   finalObj.accessKey,
-    //   finalObj.screctKey,
-    //   finalObj.recursion
-    // );
     CLI.upload(finalObj);
   });
 
