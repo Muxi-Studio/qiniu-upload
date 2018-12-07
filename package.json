@@ -33,7 +33,9 @@
     "eslint-plugin-prettier": "^2.6.2",
     "eslint-plugin-react": "^7.9.1",
     "husky-hg": "^0.15.2",
+    "mocha": "^5.2.0",
     "prettier": "^1.13.7",
-    "pretty-quick": "^1.6.0"
+    "pretty-quick": "^1.6.0",
+    "should": "^13.2.3"
   }
 }
