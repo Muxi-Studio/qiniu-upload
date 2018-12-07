@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/Muxi-Studio/qiniu-upload.svg?branch=master)](https://travis-ci.com/Muxi-Studio/qiniu-upload)
+
 # qiniu-upload-tool
 
 This is a tool for pushing static files to QiNiu by Command Line.
