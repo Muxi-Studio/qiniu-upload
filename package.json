@@ -10,7 +10,8 @@
   "scripts": {
     "test": "mocha",
     "lint": "./node_modules/.bin/eslint ./ --fix",
-    "precommit": "npm run lint && pretty-quick --staged"
+    "precommit": "npm run lint && pretty-quick --staged",
+    "cover": "istanbul cover --report lcov node_modules/mocha/bin/_mocha -- -R spec test/*.js"
   },
   "bin": {
     "qiniu-upload": "./bin/index.js"
@@ -26,6 +27,7 @@
     "qiniu": "^7.2.0"
   },
   "devDependencies": {
+    "coveralls": "^3.0.2",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^17.0.0",
     "eslint-plugin-import": "^2.12.0",
@@ -33,6 +35,7 @@
     "eslint-plugin-prettier": "^2.6.2",
     "eslint-plugin-react": "^7.9.1",
     "husky-hg": "^0.15.2",
+    "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
     "prettier": "^1.13.7",
     "pretty-quick": "^1.6.0",
