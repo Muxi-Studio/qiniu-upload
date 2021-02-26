@@ -6,11 +6,17 @@ This is a tool for pushing static files to QiNiu by Command Line.
 
 ## Install
 
-    npm install -g qiniu-upload-tool
+    `npm install -g qiniu-upload-tool` Or `yarn global add qiniu-upload-tool`
 
-## Link
+## Development
 
-    npm link qinu-upload-tool
+Run in qinu-upload-tool source dir:
+
+    `yarn link` 
+  
+In target project dir:
+
+    `yarn link qinu-upload-tool` and run with `node ./node_modules/qinu-upload-tool/bin/index.js`
 
 ## Config using CLI
 
